@@ -1,0 +1,11 @@
+.App {
+  width: 800px;
+  margin: auto;
+  padding: 1em;
+}
+
+input {
+  font-size: large;
+  padding: 0.2em;
+  width: 100%
+}
