@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { Suspense } from 'react'
 import { proxy, useProxy } from 'valtio'
 
 import './App.css'
@@ -6,7 +6,7 @@ import './App.css'
 const URL = 'https://gist.githubusercontent.com/wobsoriano/33c6fad65fc3ac1685574006683e15a8/raw/f8d792f5b2cf97eaaf9f0c2119918f333e348823/pokemon.json'
 
 const state = proxy({
-  pokemon: [],
+  pokemon: fetch(URL).then((res) => res.json()),
   filter: ''
 })
 
@@ -40,18 +40,12 @@ function PokemonTable() {
 }
 
 function App() {
-  useEffect(() => {
-    fetch(URL)
-    .then((res) => res.json())
-    .then((data) => {
-      state.pokemon = data
-    })
-  }, [])
-
   return (
     <div className="App">
       <FilterInput />
-      <PokemonTable />
+      <Suspense fallback={<div>Loading...</div>}>
+        <PokemonTable />
+      </Suspense>
     </div>
   )
 }
